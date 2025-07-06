@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Page Title</title>
+<style>
+
+  body{
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 40px 0 0 0;
+
+   
+  }
+.products-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  
+  
+}
+
+.product-image-container{
+   display: flex;
+  width: 220px;
+  height: 220px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.image{
+  width:74%;
+}
+.product-container{
+  border: 1px solid rgb(231, 231, 231);
+  padding:15px
+}
+ 
+
+.rating-image{
+  width: 100px;
+  vertical-align:text-bottom;
+  margin-right: 5px;
+  
+
+}
+
+.product-name{
+ 
+  padding:10px 10px 8px 0;
+
+}
+
+.product-name p{
+ 
+  margin: 0;
+
+}
+
+.details{
+  width: 220px;
+  margin-left: 10px;
+  
+}
+
+.product-price{
+  margin-top: 15px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.add-btn{
+ 
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ margin-top: 40px;
+ 
+}
+
+.add-btn button{
+  width: 200px;
+  height: 33px;
+  background-color:rgb(255, 216, 20);
+  border-radius: 20px;
+  border: none;
+}
+</style>
+
+</head>
+<body>
+<div class="products-grid">
+    <div class="product-container">
+        <div class="product-image-container">
+            <img class="image" src="images/products/athletic-cotton-socks-6-pairs.jpg">       
+         </div>
+         <div class="details"><div class="product-name"><p>Black and Gray Athletic Cotton Socks - 6 Pairs</p></div>
+         <div><img class="rating-image" src="images/ratings/rating-45.png"><span>87</span></div>
+         <div class="product-price">$10.90</div><div><select></select></div></div>
+        <div class="add-btn" ><button> Add to Cart</button></div>
+
+    </div>
+     <div class="product-container">
+        <div class="product-image-container">
+             <img class="image" src="images/products/athletic-cotton-socks-6-pairs.jpg">       
+         </div>
+    </div>
+      <div class="product-container">
+        <div class="product-image-container">
+             <img class="image" src="images/products/athletic-cotton-socks-6-pairs.jpg">       
+         </div>
+    </div>
+</div>
+
+</body>
+</html>
