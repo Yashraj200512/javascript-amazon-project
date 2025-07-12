@@ -1,41 +1,8 @@
-const products = [
-    {
-        image: 'images/products/athletic-cotton-socks-6-pairs.jpg',
-        name: 'Black and Gray Athletic Cotton Socks - 6 Pairs',
-        rating: {
-            stars: 45,
-            count:87
 
-        },
-        priceCents:1090,
-    },
-    {
-        image: 'images/products/intermediate-composite-basketball.jpg',
-        name: 'Intermediate Size Basketball',
-        rating: {
-            stars: 40,
-            count:127
 
-        },
-        priceCents:2095,
-    },
-
-     {
-        image: 'images/products/adults-plain-cotton-tshirt-2-pack-teal.jpg',
-        name: 'Adults Plain Cotton T-Shirt - 2 Pack',
-        rating: {
-            stars: 45,
-            count:56
-
-        },
-        priceCents:799,
-    }
-
-];
-
-let productsHTML='';
-products.forEach((product)=>{
- productsHTML+=` <div class="product-container">
+let productsHTML = '';
+products.forEach((product) => {
+  productsHTML += ` <div class="product-container">
           <div class="product-image-container">
             <img class="product-image"
               src="${product.image}">
@@ -47,18 +14,18 @@ products.forEach((product)=>{
 
           <div class="product-rating-container">
             <img class="product-rating-stars"
-              src="images/ratings/rating-${product.rating.stars}.png">
+              src="images/ratings/rating-${product.rating.stars * 10}.png">
             <div class="product-rating-count link-primary">
               ${product.rating.count}
             </div>
           </div>
 
           <div class="product-price">
-            ${(product.priceCents/100).toFixed(2)}
+            ${(product.priceCents / 100).toFixed(2)}
           </div>
 
           <div class="product-quantity-container">
-            <select>
+            <select class="js-select-${product.id}">
               <option selected value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -79,7 +46,8 @@ products.forEach((product)=>{
             Added
           </div>
 
-          <button class="add-to-cart-button button-primary">
+          <button class="add-to-cart-button button-primary" 
+           data-product-name="${product.name}"  data-product-id="${product.id}" data->
             Add to Cart
           </button>
         </div>`;
@@ -90,4 +58,47 @@ products.forEach((product)=>{
 });
 
 
-document.querySelector('.products-grid').innerHTML=productsHTML;
+document.querySelector('.products-grid').innerHTML = productsHTML;
+
+let cartArray =JSON.parse(localStorage.getItem('Cart')) || [];
+let quantitySelection;
+document.querySelectorAll('.button-primary').forEach((button,index) => {
+  button.addEventListener('click', () => {
+   quantitySelection=0;
+   quantitySelection=parseInt(document.querySelector(`.js-select-${products[index].id}`).value); 
+
+  
+    let matchingProduct = false;
+
+    cartArray.forEach((objectProduct) => {
+      if (objectProduct.productId === button.dataset.productId) {
+        objectProduct.quantity += quantitySelection;
+        matchingProduct = true;
+      }
+    })
+
+    if (!matchingProduct) {
+      cartArray.push({
+        productName: button.dataset.productName,
+        quantity: quantitySelection,
+        productId:button.dataset.productId,
+       productImage:products[index].image,
+       productPrice:products[index].priceCents 
+      })
+    }
+   let totalProducts=0;
+    cartArray.forEach((product)=>{
+    totalProducts+=product.quantity;
+    })
+
+
+    console.log(cartArray);
+    document.querySelector('.cart-quantity').innerHTML=totalProducts;
+    localStorage.setItem('Cart',JSON.stringify(cartArray));
+  });
+});
+
+
+
+
+
