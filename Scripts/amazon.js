@@ -41,7 +41,7 @@ products.forEach((product) => {
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart">
+          <div class="added-to-cart Add-Msg-${product.id}">
             <img src="images/icons/checkmark.png">
             Added
           </div>
@@ -60,14 +60,15 @@ products.forEach((product) => {
 
 document.querySelector('.products-grid').innerHTML = productsHTML;
 
-let cartArray =JSON.parse(localStorage.getItem('Cart')) || [];
+let cartArray = JSON.parse(localStorage.getItem('Cart')) || [];
 let quantitySelection;
-document.querySelectorAll('.button-primary').forEach((button,index) => {
+document.querySelectorAll('.button-primary').forEach((button, index) => {
   button.addEventListener('click', () => {
-   quantitySelection=0;
-   quantitySelection=parseInt(document.querySelector(`.js-select-${products[index].id}`).value); 
+    addedMessage(index);
+    quantitySelection = 0;
+    quantitySelection = parseInt(document.querySelector(`.js-select-${products[index].id}`).value);
 
-  
+
     let matchingProduct = false;
 
     cartArray.forEach((objectProduct) => {
@@ -81,24 +82,30 @@ document.querySelectorAll('.button-primary').forEach((button,index) => {
       cartArray.push({
         productName: button.dataset.productName,
         quantity: quantitySelection,
-        productId:button.dataset.productId,
-       productImage:products[index].image,
-       productPrice:products[index].priceCents 
+        productId: button.dataset.productId,
+        productImage: products[index].image,
+        productPrice: products[index].priceCents
       })
     }
-   let totalProducts=0;
-    cartArray.forEach((product)=>{
-    totalProducts+=product.quantity;
+    let totalProducts = 0;
+    cartArray.forEach((product) => {
+      totalProducts += product.quantity;
     })
 
 
     console.log(cartArray);
-    document.querySelector('.cart-quantity').innerHTML=totalProducts;
-    localStorage.setItem('Cart',JSON.stringify(cartArray));
+    document.querySelector('.cart-quantity').innerHTML = totalProducts;
+    localStorage.setItem('Cart', JSON.stringify(cartArray));
   });
 });
 
 
 
-
-
+let timeoutId;
+function addedMessage(index) {
+  document.querySelector(`.Add-Msg-${products[index].id}`).classList.add('added-to-cart-visible')
+  clearTimeout(timeoutId);
+  timeoutId = setTimeout(() => {
+    document.querySelector(`.Add-Msg-${products[index].id}`).classList.remove('added-to-cart-visible')
+  }, 2000);
+}
