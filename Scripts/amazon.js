@@ -1,4 +1,7 @@
 import { products } from "../data/products.js";
+import { addToCart,countTotalproducts,saveCart } from "../data/cart.js";
+
+
 let productsHTML = '';
 products.forEach((product) => {
   productsHTML += ` <div class="product-container">
@@ -51,60 +54,36 @@ products.forEach((product) => {
           </button>
         </div>`;
 
-
-
-
 });
 
 
 document.querySelector('.products-grid').innerHTML = productsHTML;
 
-let cartArray = JSON.parse(localStorage.getItem('Cart')) || [];
-let quantitySelection;
+//main cart button event loop
 document.querySelectorAll('.button-primary').forEach((button, index) => {
   button.addEventListener('click', () => {
-    addedMessage(index);
-    quantitySelection = 0;
-    quantitySelection = parseInt(document.querySelector(`.js-select-${products[index].id}`).value);
 
+    addToCart(button,index);
+    displayAddedMessage(index);
+    countTotalproducts();
 
-    let matchingProduct = false;
-
-    cartArray.forEach((objectProduct) => {
-      if (objectProduct.productId === button.dataset.productId) {
-        objectProduct.quantity += quantitySelection;
-        matchingProduct = true;
-      }
-    })
-
-    if (!matchingProduct) {
-      cartArray.push({
-        productName: button.dataset.productName,
-        quantity: quantitySelection,
-        productId: button.dataset.productId,
-        productImage: products[index].image,
-        productPrice: products[index].priceCents
-      })
-    }
-    let totalProducts = 0;
-    cartArray.forEach((product) => {
-      totalProducts += product.quantity;
-    })
-
-
-    console.log(cartArray);
-    document.querySelector('.cart-quantity').innerHTML = totalProducts;
-    localStorage.setItem('Cart', JSON.stringify(cartArray));
+    saveCart();
   });
 });
 
 
-
+//displays add-msg when clicked addToCart button
 let timeoutId;
-function addedMessage(index) {
+function displayAddedMessage(index) {
   document.querySelector(`.Add-Msg-${products[index].id}`).classList.add('added-to-cart-visible')
   clearTimeout(timeoutId);
   timeoutId = setTimeout(() => {
     document.querySelector(`.Add-Msg-${products[index].id}`).classList.remove('added-to-cart-visible')
   }, 2000);
 }
+
+
+
+
+
+

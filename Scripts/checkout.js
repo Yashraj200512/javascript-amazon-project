@@ -1,11 +1,23 @@
+import { products } from "../data/products.js";
 const cartArray=JSON.parse(localStorage.getItem('Cart')) || [];
 
 
   let orderHTML='';
+  let matchingProduct;
 function orderDisplay(){
 orderHTML='';
-cartArray.forEach(product => {
 
+cartArray.forEach(cartItem => {
+
+  products.forEach((productItem)=>{
+    
+    if(productItem.id===cartItem.Id){
+    matchingProduct=productItem;
+    
+    }
+  })
+  
+console.log(cartItem);
   orderHTML+=`<div class="cart-item-container">
             <div class="delivery-date">
               Delivery date: Tuesday, June 21
@@ -13,18 +25,18 @@ cartArray.forEach(product => {
 
             <div class="cart-item-details-grid">
               <img class="product-image"
-                src="${product.productImage}">
+                src="${matchingProduct.image}">
 
               <div class="cart-item-details">
                 <div class="product-name">
-                 ${product.productName}
+                 ${matchingProduct.name}
                 </div>
                 <div class="product-price">
-                  $${(product.productPrice /100).toFixed(2)}
+                  $${(matchingProduct.priceCents /100).toFixed(2)}
                 </div>
                 <div class="product-quantity">
                   <span>
-                    Quantity: <span class="quantity-label">${product.quantity}</span>
+                    Quantity: <span class="quantity-label">${cartItem.quantity}</span>
                   </span>
                   <span class="update-quantity-link link-primary">
                     Update
