@@ -1,4 +1,5 @@
 import { products } from "../data/products.js";
+import { countTotalproducts } from "../data/cart.js";
 const cartArray = JSON.parse(localStorage.getItem('Cart')) || [];
 
 
@@ -55,7 +56,7 @@ function orderDisplay() {
                 <div class="delivery-option">
                   <input type="radio" checked
                     class="delivery-option-input"
-                    name="delivery-option-1">
+                    name="delivery-option-${cartItem.Id}">
                   <div>
                     <div class="delivery-option-date">
                       Tuesday, June 21
@@ -68,7 +69,7 @@ function orderDisplay() {
                 <div class="delivery-option">
                   <input type="radio"
                     class="delivery-option-input"
-                    name="delivery-option-1">
+                    name="delivery-option-${cartItem.Id}">
                   <div>
                     <div class="delivery-option-date">
                       Wednesday, June 15
@@ -81,7 +82,7 @@ function orderDisplay() {
                 <div class="delivery-option">
                   <input type="radio"
                     class="delivery-option-input"
-                    name="delivery-option-1">
+                    name="delivery-option-${cartItem.Id}">
                   <div>
                     <div class="delivery-option-date">
                       Monday, June 13
@@ -123,24 +124,18 @@ function Delete() {
 }
 
 //payment calculation of order
-let totalProducts = 0;
-
-cartArray.forEach((product) => {
-  totalProducts += product.quantity;
-})
-
-
 function calculateTotalPayment(matchingProduct, cartItem) {
 
   paymentItems += matchingProduct.priceCents * cartItem.quantity;
 
 }
 
-
-document.querySelector('.return-to-home-link').innerHTML = `${totalProducts} items`;
-document.querySelector('.js-items').innerHTML = `Items (${totalProducts}):`;
+displayOrderSummary();
+function displayOrderSummary(){
+document.querySelector('.return-to-home-link').innerHTML = `${countTotalproducts()} items`;
+document.querySelector('.js-items').innerHTML = `Items (${countTotalproducts()}):`;
 document.querySelector('.payment-items').innerHTML = `$${(paymentItems / 100).toFixed(2)}`;
-
+}
 
 
 

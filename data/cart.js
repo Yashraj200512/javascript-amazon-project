@@ -12,7 +12,7 @@ export function addToCart(button, index) {
 
   cartArray.forEach((objectProduct) => {//checks if the product has already been add,
                                        //  if yes then inc it quantity
-    if (objectProduct.productId === button.dataset.productId) {
+    if (objectProduct.Id === button.dataset.productId) {
       objectProduct.quantity += quantitySelection;
       matchingProduct = true;
     }
@@ -26,15 +26,15 @@ export function addToCart(button, index) {
       
     })
   }
-}
+ 
+;}
 
 export function countTotalproducts() {
   let totalProducts = 0;
   cartArray.forEach((product) => {
     totalProducts += product.quantity;
   })
-
-  document.querySelector('.cart-quantity').innerHTML = totalProducts;
+return totalProducts;
 }
 
 export function saveCart(){

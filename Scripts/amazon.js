@@ -65,9 +65,10 @@ document.querySelectorAll('.button-primary').forEach((button, index) => {
 
     addToCart(button,index);
     displayAddedMessage(index);
-    countTotalproducts();
-
+    document.querySelector('.cart-quantity').innerHTML = countTotalproducts();
+  
     saveCart();
+    
   });
 });
 
