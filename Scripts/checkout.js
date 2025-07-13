@@ -1,24 +1,25 @@
 import { products } from "../data/products.js";
-const cartArray=JSON.parse(localStorage.getItem('Cart')) || [];
+const cartArray = JSON.parse(localStorage.getItem('Cart')) || [];
 
 
-  let orderHTML='';
-  let matchingProduct;
-function orderDisplay(){
-orderHTML='';
+let cartSummaryHTML;
+let matchingProduct;
+let paymentItems = 0;
+function orderDisplay() {
+  cartSummaryHTML = '';
 
-cartArray.forEach(cartItem => {
+  cartArray.forEach(cartItem => {
 
-  products.forEach((productItem)=>{
+    products.forEach((productItem) => {
+
+      if (productItem.id === cartItem.Id) {
+        matchingProduct = productItem;
+
+      }
+    })
+
     
-    if(productItem.id===cartItem.Id){
-    matchingProduct=productItem;
-    
-    }
-  })
-  
-console.log(cartItem);
-  orderHTML+=`<div class="cart-item-container">
+    cartSummaryHTML += `<div class="cart-item-container">
             <div class="delivery-date">
               Delivery date: Tuesday, June 21
             </div>
@@ -32,7 +33,7 @@ console.log(cartItem);
                  ${matchingProduct.name}
                 </div>
                 <div class="product-price">
-                  $${(matchingProduct.priceCents /100).toFixed(2)}
+                  $${(matchingProduct.priceCents / 100).toFixed(2)}
                 </div>
                 <div class="product-quantity">
                   <span>
@@ -94,57 +95,51 @@ console.log(cartItem);
             </div>
           </div>`;
 
-         
-    
-});
- document.querySelector('.order-summary').innerHTML=orderHTML;
- Delete();
+
+    calculateTotalPayment(matchingProduct, cartItem);
+  });
+  document.querySelector('.order-summary').innerHTML = cartSummaryHTML;
+  Delete();
 }
 
- orderDisplay();
+orderDisplay();
 
 
 
 
 
-  function Delete(){
-document.querySelectorAll('.delete-quantity-link').forEach((deleteBtn,index)=>
-{
-deleteBtn.addEventListener('click',()=>{
+function Delete() {
+  document.querySelectorAll('.delete-quantity-link').forEach((deleteBtn, index) => {
+    deleteBtn.addEventListener('click', () => {
 
-cartArray.splice(index,1);
- 
- localStorage.setItem('Cart',JSON.stringify(cartArray));
- orderDisplay();
- 
-})
-});
+      cartArray.splice(index, 1);
 
-  }
+      localStorage.setItem('Cart', JSON.stringify(cartArray));
+      orderDisplay();
+
+    })
+  });
+
+}
 
 //payment calculation of order
- let totalProducts=0;
- let paymentItems=0;
-    cartArray.forEach((product)=>{
-    totalProducts+=product.quantity;
-    })
+let totalProducts = 0;
 
-cartArray.forEach((product)=>{
-paymentItems+=product.productPrice*product.quantity;
-
-});
+cartArray.forEach((product) => {
+  totalProducts += product.quantity;
+})
 
 
+function calculateTotalPayment(matchingProduct, cartItem) {
+
+  paymentItems += matchingProduct.priceCents * cartItem.quantity;
+
+}
 
 
-
-
-
-
-    
-document.querySelector('.return-to-home-link').innerHTML=`${totalProducts} items`;
-document.querySelector('.js-items').innerHTML=`Items (${totalProducts}):`;
-document.querySelector('.payment-items').innerHTML=`$${(paymentItems/100).toFixed(2)}`;
+document.querySelector('.return-to-home-link').innerHTML = `${totalProducts} items`;
+document.querySelector('.js-items').innerHTML = `Items (${totalProducts}):`;
+document.querySelector('.payment-items').innerHTML = `$${(paymentItems / 100).toFixed(2)}`;
 
 
 
@@ -178,4 +173,4 @@ document.querySelector('.payment-items').innerHTML=`$${(paymentItems/100).toFixe
 
 //           <div class="payment-summary-row total-row">
 //             <div>Order total:</div>
-         //   <div class="payment-total">$52.51</div>
+//   <div class="payment-total">$52.51</div>
