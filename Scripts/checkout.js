@@ -1,7 +1,7 @@
 import { products } from "../data/products.js";
 import { countTotalproducts } from "../data/cart.js";
-const cartArray = JSON.parse(localStorage.getItem('Cart')) || [];
-
+import { cartArray } from "../data/cart.js";
+import { saveCart } from "../data/cart.js";
 
 let cartSummaryHTML;
 let matchingProduct;
@@ -124,8 +124,7 @@ function Delete() {
       cartArray.splice(cartArray.findIndex(obj => obj.Id === Id), 1);
 
       document.querySelector(`.js-cart-item-container-${Id}`).remove();
-      localStorage.setItem('Cart', JSON.stringify(cartArray));
-      console.log(cartArray);
+      saveCart();
 
     })
   });

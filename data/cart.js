@@ -1,7 +1,7 @@
 import { products } from "./products.js";
 
 
-let cartArray = JSON.parse(localStorage.getItem('Cart')) || [];
+export let cartArray = getCartArray();
 
 let quantitySelection;
 export function addToCart(button, index) {
@@ -39,4 +39,9 @@ return totalProducts;
 
 export function saveCart(){
     localStorage.setItem('Cart', JSON.stringify(cartArray));
+}
+
+ function getCartArray(){
+return JSON.parse(localStorage.getItem('Cart')) || [];
+
 }
