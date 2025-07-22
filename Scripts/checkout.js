@@ -19,8 +19,8 @@ function orderDisplay() {
       }
     })
 
-    
-    cartSummaryHTML += `<div class="cart-item-container">
+
+    cartSummaryHTML += `<div class="cart-item-container js-cart-item-container-${cartItem.Id}">
             <div class="delivery-date">
               Delivery date: Tuesday, June 21
             </div>
@@ -43,7 +43,7 @@ function orderDisplay() {
                   <span class="update-quantity-link link-primary">
                     Update
                   </span>
-                  <span class="delete-quantity-link link-primary">
+                  <span class="delete-quantity-link link-primary" data-product-id="${matchingProduct.id}">
                     Delete
                   </span>
                 </div>
@@ -100,29 +100,38 @@ function orderDisplay() {
     calculateTotalPayment(matchingProduct, cartItem);
   });
   document.querySelector('.order-summary').innerHTML = cartSummaryHTML;
-  Delete();
+
 }
 
 orderDisplay();
 
 
-
+Delete();
 
 
 function Delete() {
-  document.querySelectorAll('.delete-quantity-link').forEach((deleteBtn, index) => {
+  document.querySelectorAll('.delete-quantity-link').forEach((deleteBtn) => {
     deleteBtn.addEventListener('click', () => {
 
-      cartArray.splice(index, 1);
 
+      let Id = deleteBtn.dataset.productId;
+
+      console.log(cartArray.findIndex(obj => {
+
+        return obj.Id === Id;
+      }))
+
+      cartArray.splice(cartArray.findIndex(obj => obj.Id === Id), 1);
+
+      document.querySelector(`.js-cart-item-container-${Id}`).remove();
       localStorage.setItem('Cart', JSON.stringify(cartArray));
-      orderDisplay();
+      console.log(cartArray);
 
     })
   });
 
 }
-
+console.log(cartArray);
 //payment calculation of order
 function calculateTotalPayment(matchingProduct, cartItem) {
 
@@ -131,10 +140,10 @@ function calculateTotalPayment(matchingProduct, cartItem) {
 }
 
 displayOrderSummary();
-function displayOrderSummary(){
-document.querySelector('.return-to-home-link').innerHTML = `${countTotalproducts()} items`;
-document.querySelector('.js-items').innerHTML = `Items (${countTotalproducts()}):`;
-document.querySelector('.payment-items').innerHTML = `$${(paymentItems / 100).toFixed(2)}`;
+function displayOrderSummary() {
+  document.querySelector('.return-to-home-link').innerHTML = `${countTotalproducts()} items`;
+  document.querySelector('.js-items').innerHTML = `Items (${countTotalproducts()}):`;
+  document.querySelector('.payment-items').innerHTML = `$${(paymentItems / 100).toFixed(2)}`;
 }
 
 
@@ -148,24 +157,3 @@ document.querySelector('.payment-items').innerHTML = `$${(paymentItems / 100).to
 
 
 
-// <div class="payment-items">$42.75</div>
-//           </div>
-
-//           <div class="payment-summary-row">
-//             <div>Shipping &amp; handling:</div>
-//             <div class="payment-ship">$4.99</div>
-//           </div>
-
-//           <div class="payment-summary-row subtotal-row">
-//             <div>Total before tax:</div>
-//             <div class="payment-before-tax">$47.74</div>
-//           </div>
-
-//           <div class="payment-summary-row">
-//             <div>Estimated tax (10%):</div>
-//             <div class="payment-tax">$4.77</div>
-//           </div>
-
-//           <div class="payment-summary-row total-row">
-//             <div>Order total:</div>
-//   <div class="payment-total">$52.51</div>
